@@ -1,4 +1,10 @@
 package ir.maktabsharif.repository.user;
 
-public interface UserRepository {
+import ir.maktabsharif.dao.User;
+import ir.maktabsharif.repository.base.BaseRepository;
+
+import java.util.List;
+
+public interface UserRepository extends BaseRepository<User,Long> {
+
 }

@@ -1,4 +1,44 @@
 package ir.maktabsharif.command;
 
-public class UserCommand {
+import ir.maktabsharif.dao.User;
+import ir.maktabsharif.dao.base.BaseModel;
+import ir.maktabsharif.dto.user.UserRequestDto;
+import ir.maktabsharif.dto.user.UserResponseDto;
+import ir.maktabsharif.repository.studySession.StudySessionRepository;
+import ir.maktabsharif.repository.subject.SubjectRepository;
+import ir.maktabsharif.repository.subject.SubjectRepositoryImpl;
+import org.springframework.stereotype.Component;
+
+@Component
+public class UserCommand implements Commandable<User, UserRequestDto, UserResponseDto> {
+
+    private final SubjectRepository subjectRepository;
+    private final StudySessionRepository studySessionRepository;
+
+    public UserCommand(SubjectRepository subjectRepository, StudySessionRepository studySessionRepository) {
+        this.subjectRepository = subjectRepository;
+        this.studySessionRepository = studySessionRepository;
+    }
+
+    @Override
+    public User requestToDao(UserRequestDto userRequestDto) {
+        return User.builder()
+                .username(userRequestDto.getUsername())
+                .password(userRequestDto.getPassword())
+                .studySessions(userRequestDto.getStudySessionsID().stream().map(studySessionRepository::read).toList())
+                .subjects(userRequestDto.getSubjectsId().stream().map(subjectRepository::read).toList())
+                .fullname(userRequestDto.getFullname())
+                .build();
+    }
+
+    @Override
+    public UserResponseDto daoToResponse(User user) {
+        return UserResponseDto.builder()
+                .id(user.getId())
+                .fullname(user.getFullname())
+                .subjectsId(user.getSubjects().stream().map(BaseModel::getId).toList())
+                .studySessionsID(user.getStudySessions().stream().map(BaseModel::getId).toList())
+                .username(user.getUsername())
+                .build();
+    }
 }

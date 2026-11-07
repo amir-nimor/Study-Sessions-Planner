@@ -2,7 +2,9 @@ package ir.maktabsharif.repository.base;
 
 
 
-import ir.maktabsharif.dao.baseMode.BaseModel;
+
+
+import ir.maktabsharif.dao.base.BaseModel;
 
 import java.util.List;
 

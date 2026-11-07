@@ -1,4 +1,10 @@
 package ir.maktabsharif.command;
 
-public interface Commandable {
+import ir.maktabsharif.dao.base.BaseModel;
+
+public interface Commandable <T extends BaseModel,Q,S>{
+
+    T requestToDao(Q q);
+
+    S daoToResponse(T t);
 }

@@ -1,4 +1,7 @@
 package ir.maktabsharif.repository.subject;
 
-public interface SubjectRepository {
+import ir.maktabsharif.dao.Subject;
+import ir.maktabsharif.repository.base.BaseRepository;
+
+public interface SubjectRepository extends BaseRepository<Subject,Long> {
 }

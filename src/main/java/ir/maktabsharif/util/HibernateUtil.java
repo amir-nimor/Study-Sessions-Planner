@@ -5,9 +5,10 @@ import jakarta.persistence.*;
 
 import java.util.function.Function;
 
+
 public class HibernateUtil {
 
-    private static final String PERSISTENCE_UNIT = "library";
+    private static final String PERSISTENCE_UNIT = "study";
 
     private static EntityManagerFactory emf;
 
