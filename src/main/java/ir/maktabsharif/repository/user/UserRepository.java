@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface UserRepository extends BaseRepository<User,Long> {
 
+    User update1(User user,Long id);
+
+    User findByUserName(String username);
 }

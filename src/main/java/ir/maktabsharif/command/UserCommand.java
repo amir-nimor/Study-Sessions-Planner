@@ -20,6 +20,14 @@ public class UserCommand implements Commandable<User, UserRequestDto, UserRespon
         this.studySessionRepository = studySessionRepository;
     }
 
+    public UserResponseDto convertWitOuthLazyException(User user){
+        return UserResponseDto.builder()
+                .fullname(user.getFullname())
+                .username(user.getUsername())
+                .id(user.getId())
+                .build();
+    }
+
     @Override
     public User requestToDao(UserRequestDto userRequestDto) {
         return User.builder()
@@ -39,6 +47,7 @@ public class UserCommand implements Commandable<User, UserRequestDto, UserRespon
                 .subjectsId(user.getSubjects().stream().map(BaseModel::getId).toList())
                 .studySessionsID(user.getStudySessions().stream().map(BaseModel::getId).toList())
                 .username(user.getUsername())
+                .passwordHash(user.getPassword())
                 .build();
     }
 }

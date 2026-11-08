@@ -18,6 +18,8 @@ public class UserResponseDto {
 
     private String fullname;
 
+    private String passwordHash;
+
     private List<Long> subjectsId;
 
     private List<Long> studySessionsID;

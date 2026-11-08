@@ -16,12 +16,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class studySessionServiceImpl implements StudySessionService<StudySession,Long, StudySessionRequestDto, StudySessionResponseDto>{
+public class StudySessionServiceImpl implements StudySessionService<StudySession,Long, StudySessionRequestDto, StudySessionResponseDto>{
 
     private final StudySessionRepository repository;
     private final StudySessionCommand command;
 
-    public studySessionServiceImpl(StudySessionRepository repository, StudySessionCommand command) {
+    public StudySessionServiceImpl(StudySessionRepository repository, StudySessionCommand command) {
         this.repository = repository;
         this.command = command;
     }

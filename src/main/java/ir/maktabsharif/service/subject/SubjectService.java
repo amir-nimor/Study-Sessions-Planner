@@ -1,5 +1,6 @@
 package ir.maktabsharif.service.subject;
 
+import ir.maktabsharif.dao.Subject;
 import ir.maktabsharif.dao.base.BaseModel;
 
 import java.util.List;
@@ -14,4 +15,7 @@ public interface SubjectService <T extends BaseModel<ID>,ID extends Number,Q,S>{
     S read (ID id);
 
     List<S> findAll();
+
+    List<S> getUserSubjects(Long userId);
+
 }

@@ -7,11 +7,13 @@ import java.util.List;
 public interface UserService <T extends BaseModel<ID>,ID extends Number,Q,S>{
     S create(Q q);
 
-    S update(Q q);
+    S update(Q q,ID id);
 
     ID delete(ID id);
 
     S read (ID id);
 
     List<S> findAll();
+
+    S findByUserrName(String username);
 }

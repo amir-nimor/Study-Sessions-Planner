@@ -14,8 +14,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
-public class SubjectServiceImpl implements SubjectService<Subject,Long, SubjectRequestDto, SubjectResponseDto>{
+public class SubjectServiceImpl implements SubjectService<Subject, Long, SubjectRequestDto, SubjectResponseDto> {
 
     private final SubjectRepository repository;
     private final SubjectCommand command;
@@ -25,41 +26,41 @@ public class SubjectServiceImpl implements SubjectService<Subject,Long, SubjectR
         this.command = subjectCommand;
     }
 
-    private void validation(SubjectRequestDto subjectRequestDto){
-        Ruls.check(subjectRequestDto.getName().isBlank(),"your name is empty");
+    private void validation(SubjectRequestDto subjectRequestDto) {
+        Ruls.check(subjectRequestDto.getName().isBlank(), "your name is empty");
     }
 
     @Override
-    @CacheEvict(value = "SubjectCache",allEntries = true)
+    @CacheEvict(value = "SubjectCache", allEntries = true)
     public SubjectResponseDto create(SubjectRequestDto subjectRequestDto) {
         try {
             validation(subjectRequestDto);
             Subject model = command.requestToDao(subjectRequestDto);
             return command.daoToResponse(repository.create(model));
-        }catch (ValidationExceptio | RepositoryException e){
-            throw new BuisenesException("service is failed => "+e.getMessage());
+        } catch (ValidationExceptio | RepositoryException e) {
+            throw new BuisenesException("service is failed => " + e.getMessage());
         }
     }
 
     @Override
-    @CacheEvict(value = "SubjectCache",allEntries = true)
+    @CacheEvict(value = "SubjectCache", allEntries = true)
     public SubjectResponseDto update(SubjectRequestDto subjectRequestDto) {
         try {
             validation(subjectRequestDto);
             Subject model = command.requestToDao(subjectRequestDto);
             return command.daoToResponse(repository.update(model));
-        }catch (ValidationExceptio | RepositoryException e){
-            throw new BuisenesException("service is failed => "+e.getMessage());
+        } catch (ValidationExceptio | RepositoryException e) {
+            throw new BuisenesException("service is failed => " + e.getMessage());
         }
     }
 
     @Override
-    @CacheEvict(value = "SubjectCache",allEntries = true)
+    @CacheEvict(value = "SubjectCache", allEntries = true)
     public Long delete(Long aLong) {
         try {
             return repository.delete(aLong);
-        }catch (RepositoryException e){
-            throw new BuisenesException("service is failed => "+e.getMessage());
+        } catch (RepositoryException e) {
+            throw new BuisenesException("service is failed => " + e.getMessage());
         }
     }
 
@@ -67,8 +68,8 @@ public class SubjectServiceImpl implements SubjectService<Subject,Long, SubjectR
     public SubjectResponseDto read(Long aLong) {
         try {
             return command.daoToResponse(repository.read(aLong));
-        }catch ( RepositoryException e){
-            throw new BuisenesException("service is failed => "+e.getMessage());
+        } catch (RepositoryException e) {
+            throw new BuisenesException("service is failed => " + e.getMessage());
         }
     }
 
@@ -76,10 +77,20 @@ public class SubjectServiceImpl implements SubjectService<Subject,Long, SubjectR
     @Cacheable("SubjectCache")
     public List<SubjectResponseDto> findAll() {
         try {
-            List<Subject> tList =  repository.findAll();
+            List<Subject> tList = repository.findAll();
             return tList.stream().map(command::daoToResponse).toList();
-        }catch ( RepositoryException e){
-            throw new BuisenesException("service is failed => "+e.getMessage());
+        } catch (RepositoryException e) {
+            throw new BuisenesException("service is failed => " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<SubjectResponseDto> getUserSubjects(Long userId) {
+        try {
+            List<Subject> tList = repository.getUserSubjects(userId);
+            return tList.stream().map(command::daoToResponse).toList();
+        } catch (RepositoryException e) {
+            throw new BuisenesException("service is failed => " + e.getMessage());
         }
     }
 }

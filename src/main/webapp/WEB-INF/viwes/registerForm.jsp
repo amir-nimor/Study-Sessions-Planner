@@ -13,7 +13,7 @@
 <body>
 
 
-<form action="/register" method="post">
+<form action="register" method="post">
 
     <label>Username:
     <input type="text" name="username" /></label>

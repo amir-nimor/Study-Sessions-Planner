@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService<User,Long, UserRequestDto, UserResponseDto>{
+public class UserServiceImpl implements UserService<User, Long, UserRequestDto, UserResponseDto> {
 
 
     private final UserCommand command;
@@ -31,14 +31,14 @@ public class UserServiceImpl implements UserService<User,Long, UserRequestDto, U
         this.passwordEncoder = passwordEncoder;
     }
 
-    private void validation(UserRequestDto userRequestDto){
-        Ruls.check(userRequestDto.getUsername().isBlank(),"your user name is empty");
-        Ruls.check(userRequestDto.getPassword().isBlank(),"your user pass is empty");
-        Ruls.check(userRequestDto.getFullname().isBlank(),"your name full is empty");
+    private void validation(UserRequestDto userRequestDto) {
+        Ruls.check(userRequestDto.getUsername().isBlank(), "your user name is empty");
+        Ruls.check(userRequestDto.getPassword().isBlank(), "your user pass is empty");
+        Ruls.check(userRequestDto.getFullname().isBlank(), "your name full is empty");
     }
 
     @Override
-    @CacheEvict(value = "UserCash",allEntries = true)
+    @CacheEvict(value = "UserCash", allEntries = true)
     public UserResponseDto create(UserRequestDto userRequestDto) {
         try {
             validation(userRequestDto);
@@ -46,30 +46,30 @@ public class UserServiceImpl implements UserService<User,Long, UserRequestDto, U
             userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
             User model = command.requestToDao(userRequestDto);
             return command.daoToResponse(repository.create(model));
-        }catch (ValidationExceptio | RepositoryException e){
-            throw new BuisenesException("service is failed => "+e.getMessage());
+        } catch (ValidationExceptio | RepositoryException e) {
+            throw new BuisenesException("service is failed => " + e.getMessage());
         }
     }
 
     @Override
-    @CacheEvict(value = "UserCash",allEntries = true)
-    public UserResponseDto update(UserRequestDto userRequestDto) {
+    @CacheEvict(value = "UserCash", allEntries = true)
+    public UserResponseDto update(UserRequestDto userRequestDto, Long id) {
         try {
             validation(userRequestDto);
             User model = command.requestToDao(userRequestDto);
-            return command.daoToResponse(repository.update(model));
-        }catch (ValidationExceptio | RepositoryException e){
-            throw new BuisenesException("service is failed => "+e.getMessage());
+            return command.daoToResponse(repository.update1(model, id));
+        } catch (ValidationExceptio | RepositoryException e) {
+            throw new BuisenesException("service is failed => " + e.getMessage());
         }
     }
 
     @Override
-    @CacheEvict(value = "UserCash",allEntries = true)
+    @CacheEvict(value = "UserCash", allEntries = true)
     public Long delete(Long aLong) {
         try {
             return repository.delete(aLong);
-        }catch (RepositoryException e){
-            throw new BuisenesException("service is failed => "+e.getMessage());
+        } catch (RepositoryException e) {
+            throw new BuisenesException("service is failed => " + e.getMessage());
         }
     }
 
@@ -77,8 +77,8 @@ public class UserServiceImpl implements UserService<User,Long, UserRequestDto, U
     public UserResponseDto read(Long aLong) {
         try {
             return command.daoToResponse(repository.read(aLong));
-        }catch ( RepositoryException e){
-            throw new BuisenesException("service is failed => "+e.getMessage());
+        } catch (RepositoryException e) {
+            throw new BuisenesException("service is failed => " + e.getMessage());
         }
     }
 
@@ -86,10 +86,19 @@ public class UserServiceImpl implements UserService<User,Long, UserRequestDto, U
     @Cacheable("UserCash")
     public List<UserResponseDto> findAll() {
         try {
-            List<User> tList =  repository.findAll();
-            return tList.stream().map(command::daoToResponse).toList();
-        }catch ( RepositoryException e){
-            throw new BuisenesException("service is failed => "+e.getMessage());
+            List<User> tList = repository.findAll();
+            return tList.stream().map(command::convertWitOuthLazyException).toList();
+        } catch (RepositoryException e) {
+            throw new BuisenesException("service is failed => " + e.getMessage());
+        }
+    }
+
+    @Override
+    public UserResponseDto findByUserrName(String username) {
+        try {
+            return command.daoToResponse(repository.findByUserName(username));
+        } catch (RepositoryException e) {
+            throw new BuisenesException("your find by username is failed => " + e.getMessage());
         }
     }
 }
