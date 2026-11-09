@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -32,17 +33,20 @@ public class SessionController {
 
 
     @GetMapping("/sessions")
-    public String displayAll(Model model){
-        model.addAttribute("sessions",studySessionService.findAll());
+    public String displayAll(Model model,HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        UserResponseDto userResponseDto = (UserResponseDto) session.getAttribute("user");
+        model.addAttribute("sessions",studySessionService.userStudySession(userResponseDto.getId()));
+//        model.addAttribute("sessions",studySessionService.findAll());
         return "allSessions";
     }
 
     @GetMapping("/add")
     public String sessionsAdd(Model model, HttpServletRequest request){
         HttpSession session = request.getSession(false);
-//        UserResponseDto userResponseDto = (UserResponseDto) session.getAttribute("user");
-//        model.addAttribute("subjects",subjectService.getUserSubjects(userResponseDto.getId()));
-//        model.addAttribute("userId",userResponseDto.getId());
+        UserResponseDto userResponseDto = (UserResponseDto) session.getAttribute("user");
+        model.addAttribute("subjects",subjectService.getUserSubjects(userResponseDto.getId()));
+        model.addAttribute("userId",userResponseDto.getId());
         return "sessionForm";
     }
 
@@ -65,11 +69,17 @@ public class SessionController {
 
         StudySessionResponseDto studySessionResponseDto = (StudySessionResponseDto)studySessionService.create(studySessionRequestDto);
 
-        List<Long> sessionslist = userResponseDto.getStudySessionsID();
+        List<Long> sessionslist = new ArrayList<>();
+        sessionslist.addAll(userResponseDto.getStudySessionsID());
         sessionslist.add(studySessionResponseDto.getId());
+
 
         UserRequestDto userRequestDto = UserRequestDto.builder()
                 .studySessionsID(sessionslist)
+                .username(userResponseDto.getUsername())
+                .fullname(userResponseDto.getFullname())
+                .subjectsId(userResponseDto.getSubjectsId())
+                .password(userResponseDto.getPasswordHash())
                 .build();
 
         userService.update(userRequestDto,userResponseDto.getId());

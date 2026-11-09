@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
+
 public class StudySessionResponseDto {
 
     private Long id;
@@ -20,4 +20,15 @@ public class StudySessionResponseDto {
     private String notes;
 
     private Long userId;
+
+    @Override
+    public String toString() {
+        return "StudySessionResponseDto{" +
+                "id=" + id +
+                ", subjectId=" + subjectId +
+                ", minutes=" + minutes +
+                ", notes='" + notes + '\'' +
+                ", userId=" + userId +
+                '}';
+    }
 }

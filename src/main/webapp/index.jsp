@@ -17,6 +17,7 @@
 
 
 <a href="subject/all">all subject</a><br>
+<a href="subject/add">add subject</a><br>
 
 </body>
 </html>

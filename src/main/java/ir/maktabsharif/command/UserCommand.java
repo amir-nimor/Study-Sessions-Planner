@@ -30,13 +30,14 @@ public class UserCommand implements Commandable<User, UserRequestDto, UserRespon
 
     @Override
     public User requestToDao(UserRequestDto userRequestDto) {
-        return User.builder()
+        User user = User.builder()
                 .username(userRequestDto.getUsername())
                 .password(userRequestDto.getPassword())
-                .studySessions(userRequestDto.getStudySessionsID().stream().map(studySessionRepository::read).toList())
-                .subjects(userRequestDto.getSubjectsId().stream().map(subjectRepository::read).toList())
+                .studySessions(userRequestDto.getStudySessionsID().stream().map(u -> studySessionRepository.read(u)).toList())
+                .subjects(userRequestDto.getSubjectsId().stream().map(u -> subjectRepository.read(u)).toList())
                 .fullname(userRequestDto.getFullname())
                 .build();
+        return user;
     }
 
     @Override
@@ -44,8 +45,8 @@ public class UserCommand implements Commandable<User, UserRequestDto, UserRespon
         return UserResponseDto.builder()
                 .id(user.getId())
                 .fullname(user.getFullname())
-                .subjectsId(user.getSubjects().stream().map(BaseModel::getId).toList())
-                .studySessionsID(user.getStudySessions().stream().map(BaseModel::getId).toList())
+                .subjectsId(user.getSubjects().stream().map(u -> u.getId()).toList())
+                .studySessionsID(user.getStudySessions().stream().map(u -> u.getId()).toList())
                 .username(user.getUsername())
                 .passwordHash(user.getPassword())
                 .build();

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class StudySessionServiceImpl implements StudySessionService<StudySession,Long, StudySessionRequestDto, StudySessionResponseDto>{
+public class StudySessionServiceImpl implements StudySessionService<StudySession, Long, StudySessionRequestDto, StudySessionResponseDto> {
 
     private final StudySessionRepository repository;
     private final StudySessionCommand command;
@@ -26,42 +26,42 @@ public class StudySessionServiceImpl implements StudySessionService<StudySession
         this.command = command;
     }
 
-    private void validation(StudySessionRequestDto studySessionRequestDto){
-        Ruls.check(studySessionRequestDto.getNotes().isBlank(),"your studySession is empty");
-        Ruls.check(studySessionRequestDto.getMinutes()==null,"your studySession is empty");
+    private void validation(StudySessionRequestDto studySessionRequestDto) {
+        Ruls.check(studySessionRequestDto.getNotes().isBlank(), "your studySession is empty");
+        Ruls.check(studySessionRequestDto.getMinutes() == null, "your studySession is empty");
     }
 
     @Override
-    @CacheEvict(value = "StudySessionCoach",allEntries = true)
+    @CacheEvict(value = "StudySessionCoach", allEntries = true)
     public StudySessionResponseDto create(StudySessionRequestDto studySessionRequestDto) {
         try {
             validation(studySessionRequestDto);
             StudySession model = command.requestToDao(studySessionRequestDto);
             return command.daoToResponse(repository.create(model));
-        }catch (ValidationExceptio | RepositoryException e){
-            throw new BuisenesException("service is failed => "+e.getMessage());
+        } catch (ValidationExceptio | RepositoryException e) {
+            throw new BuisenesException("service is failed => " + e.getMessage());
         }
     }
 
     @Override
-    @CacheEvict(value = "StudySessionCoach",allEntries = true)
+    @CacheEvict(value = "StudySessionCoach", allEntries = true)
     public StudySessionResponseDto update(StudySessionRequestDto studySessionRequestDto) {
         try {
             validation(studySessionRequestDto);
             StudySession model = command.requestToDao(studySessionRequestDto);
             return command.daoToResponse(repository.update(model));
-        }catch (ValidationExceptio | RepositoryException e){
-            throw new BuisenesException("service is failed => "+e.getMessage());
+        } catch (ValidationExceptio | RepositoryException e) {
+            throw new BuisenesException("service is failed => " + e.getMessage());
         }
     }
 
     @Override
-    @CacheEvict(value = "StudySessionCoach",allEntries = true)
+    @CacheEvict(value = "StudySessionCoach", allEntries = true)
     public Long delete(Long aLong) {
         try {
             return repository.delete(aLong);
-        }catch (RepositoryException e){
-            throw new BuisenesException("service is failed => "+e.getMessage());
+        } catch (RepositoryException e) {
+            throw new BuisenesException("service is failed => " + e.getMessage());
         }
     }
 
@@ -69,8 +69,8 @@ public class StudySessionServiceImpl implements StudySessionService<StudySession
     public StudySessionResponseDto read(Long aLong) {
         try {
             return command.daoToResponse(repository.read(aLong));
-        }catch ( RepositoryException e){
-            throw new BuisenesException("service is failed => "+e.getMessage());
+        } catch (RepositoryException e) {
+            throw new BuisenesException("service is failed => " + e.getMessage());
         }
     }
 
@@ -78,10 +78,19 @@ public class StudySessionServiceImpl implements StudySessionService<StudySession
     @Cacheable("StudySessionCoach")
     public List<StudySessionResponseDto> findAll() {
         try {
-            List<StudySession> tList =  repository.findAll();
+            List<StudySession> tList = repository.findAll();
             return tList.stream().map(command::daoToResponse).toList();
-        }catch ( RepositoryException e){
-            throw new BuisenesException("service is failed => "+e.getMessage());
+        } catch (RepositoryException e) {
+            throw new BuisenesException("service is failed => " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<StudySessionResponseDto> userStudySession(Long userId) {
+        try {
+            return repository.userStudySession(userId).stream().map(s -> command.daoToResponse(s)).toList();
+        } catch (RepositoryException e) {
+            throw new BuisenesException("your user id is not founded => " + e.getMessage());
         }
     }
 

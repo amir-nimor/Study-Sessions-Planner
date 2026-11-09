@@ -15,7 +15,7 @@
 
 
 <c:forEach var="subject" items="${subjects}">
-    <li>${subject.name}</li>
+    <li>${subject.name} <a href="${subject.id}">deatails</a> </li>
 </c:forEach>
 
 

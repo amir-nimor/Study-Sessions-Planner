@@ -27,7 +27,7 @@
 
 
     <label>
-        food:
+        session:
         <select name="subjectId">
             <c:forEach var="subject" items="${subjects}">
                 <option value="${subject.id}"  >${subject.name}</option>

@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
+
 public class User extends BaseModel<Long> {
 
     private String username;

@@ -1,5 +1,6 @@
 package ir.maktabsharif.service.studySession;
 
+import ir.maktabsharif.dao.StudySession;
 import ir.maktabsharif.dao.base.BaseModel;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface StudySessionService <T extends BaseModel<ID>,ID extends Number,
     S read (ID id);
 
     List<S> findAll();
+
+    List<S> userStudySession(Long userId);
 }

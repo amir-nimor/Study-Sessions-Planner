@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<h2>${session.toString}</h2>
+<h2>${session}</h2>
 
 </body>
 </html>

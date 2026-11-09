@@ -13,8 +13,8 @@
 </head>
 <body>
 
-<c:forEach var="session" items="${allSessions}">
-    <li>${session.minutes} <a href="session/${session.id}">details</a> </li>
+<c:forEach var="session" items="${sessions}">
+    <li>${session.minutes} <a href="${session.id}">details</a> </li>
 </c:forEach>
 
 

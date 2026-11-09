@@ -57,6 +57,7 @@ public class UserServiceImpl implements UserService<User, Long, UserRequestDto, 
         try {
             validation(userRequestDto);
             User model = command.requestToDao(userRequestDto);
+            model.setId(id);
             return command.daoToResponse(repository.update1(model, id));
         } catch (ValidationExceptio | RepositoryException e) {
             throw new BuisenesException("service is failed => " + e.getMessage());
