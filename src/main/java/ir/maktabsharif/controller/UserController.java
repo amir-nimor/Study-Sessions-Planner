@@ -186,8 +186,19 @@ public class UserController {
     public String profile(HttpServletRequest request,Model model) {
         HttpSession session = request.getSession(false);
         UserResponseDto userResponseDto = (UserResponseDto) session.getAttribute("user");
-        model.addAttribute("user",userResponseDto);
+        UserResponseDto userResponseDto1 = (UserResponseDto) userService.findByUserrName(userResponseDto.getUsername());
+        model.addAttribute("user",userResponseDto1);
         return "profiler";
+    }
+
+
+    @RequestMapping("/logout")
+    public String logOut(HttpServletRequest request,HttpServletResponse response){
+        HttpSession session = request.getSession(false);
+        session.invalidate();
+        Cookie cookie = new Cookie("token",null);
+        response.addCookie(cookie);
+        return "redirect:/";
     }
 
 

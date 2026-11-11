@@ -6,6 +6,7 @@
 <a href="user/login">login</a><br>
 <a href="user/singUp">sing up</a><br>
 <a href="user/profiler">profiler</a><br>
+<a href="user/logout" >log out</a><br>
 <a href="user/all">all users</a><br><br><br>
 
 
