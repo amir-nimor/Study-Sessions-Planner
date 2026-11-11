@@ -8,6 +8,7 @@ import ir.maktabsharif.service.subject.SubjectService;
 import ir.maktabsharif.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ public class SubjectController {
 
 
     @GetMapping("/all")
+    @ResponseStatus(HttpStatus.OK)
     public String allSubject(Model model,HttpServletRequest request){
         HttpSession session = request.getSession(false);
         UserResponseDto userResponseDto = (UserResponseDto) session.getAttribute("user");

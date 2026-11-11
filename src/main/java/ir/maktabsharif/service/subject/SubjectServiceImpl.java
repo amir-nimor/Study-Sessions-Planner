@@ -74,7 +74,7 @@ public class SubjectServiceImpl implements SubjectService<Subject, Long, Subject
     }
 
     @Override
-    @Cacheable("SubjectCache")
+
     public List<SubjectResponseDto> findAll() {
         try {
             List<Subject> tList = repository.findAll();
@@ -85,6 +85,7 @@ public class SubjectServiceImpl implements SubjectService<Subject, Long, Subject
     }
 
     @Override
+    @Cacheable("SubjectCache")
     public List<SubjectResponseDto> getUserSubjects(Long userId) {
         try {
             List<Subject> tList = repository.getUserSubjects(userId);

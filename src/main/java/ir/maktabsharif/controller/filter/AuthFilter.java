@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebFilter({"/subject/*" , "/session/*"})
+@WebFilter({"/subject/*" , "/session/*","/user/profiler"})
 public class AuthFilter implements Filter {
 
     @Override

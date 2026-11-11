@@ -75,7 +75,6 @@ public class StudySessionServiceImpl implements StudySessionService<StudySession
     }
 
     @Override
-    @Cacheable("StudySessionCoach")
     public List<StudySessionResponseDto> findAll() {
         try {
             List<StudySession> tList = repository.findAll();
@@ -86,6 +85,7 @@ public class StudySessionServiceImpl implements StudySessionService<StudySession
     }
 
     @Override
+    @Cacheable("StudySessionCoach")
     public List<StudySessionResponseDto> userStudySession(Long userId) {
         try {
             return repository.userStudySession(userId).stream().map(s -> command.daoToResponse(s)).toList();
